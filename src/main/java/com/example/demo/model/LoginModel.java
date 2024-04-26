@@ -1,5 +1,6 @@
 package com.example.demo.model;
 // hiberante
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -26,5 +27,13 @@ public class LoginModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
