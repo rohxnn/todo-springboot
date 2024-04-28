@@ -22,15 +22,18 @@ public class AuthLogin {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> Login(@RequestBody LoginModel login, @RequestHeader(name = "Authorization") String authHeader) {
+        String authorization = "myDearFreindXYZ"; //header value for testing purposes only
         LoginResponse message = loginService.checkLogin(login.getUsername(), login.getPassword());
         if (authHeader == null || authHeader.isEmpty()) {
             return ResponseEntity.badRequest()
-                    .body(new LoginResponse("Bad Request", "Missing Authorization Header"));
-        } else if (message.getAccessToken() == null) {
+              .body(new LoginResponse("Bad Request", "Missing Authorization Header"));
+        }  
+        else if (message.getAccessToken() == null && authHeader.equals(authorization)) {
             return ResponseEntity.status(401).body(new LoginResponse(message.getMessage(), null)); // Use message from LoginResponse if available
-        } else {
-            // Security: Avoid sending the entire token in the response. Consider a separate token management mechanism.
+        } else if(message.getAccessToken() != null && authHeader.equals(authorization)) {
             return ResponseEntity.ok(new LoginResponse("Login Successful", message.getAccessToken()));
+        } else {
+            return ResponseEntity.status(401).body(null);
         }
     }
 }
