@@ -31,7 +31,7 @@ public class AuthLogin {
         else if (message.getAccessToken() == null && authHeader.equals(authorization)) {
             return ResponseEntity.status(401).body(new LoginResponse(message.getMessage(), null)); // Use message from LoginResponse if available
         } else if(message.getAccessToken() != null && authHeader.equals(authorization)) {
-            return ResponseEntity.ok(new LoginResponse("Login Successful", message.getAccessToken()));
+            return ResponseEntity.ok(new LoginResponse(message.getId(), "Login Successful", message.getAccessToken()));
         } else {
             return ResponseEntity.status(401).body(null);
         }
