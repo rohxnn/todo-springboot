@@ -2,6 +2,9 @@ package com.example.demo.model;
 
 //hibernate
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -9,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class ProjectInfo {
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String title;
   private String status;
@@ -19,19 +23,20 @@ public class ProjectInfo {
 
   @JoinColumn(name = "updated_date")
   private String updatedDate;
-  
-  @ManyToOne
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "u_id")
   private LoginModel user;
 
-  public ProjectInfo(String title, String status, String description, String createdDate, String updatedDate,
-      LoginModel user) {
+  public  ProjectInfo() {}
+
+  public ProjectInfo(long id, String title, String status, String description, String createdDate, String updatedDate) {
+    this.id = id;
     this.title = title;
     this.status = status;
     this.description = description;
     this.createdDate = createdDate;
     this.updatedDate = updatedDate;
-    this.user = user;
   }
 
   // Getters and Setters
