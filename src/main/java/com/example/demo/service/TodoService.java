@@ -21,8 +21,8 @@ private LoginRepo loginService;
     if (user == null) {
       return new LoginResponse("Invalid username or password", null);
     } else {
-      String accessToken = loginService.findTokenByUsernameAndPassword(userName, password); 
-      return new LoginResponse("Logged in successfully", accessToken);
+      String accessToken = user.getToken();
+      return new LoginResponse(user.getId(),"Logged in successfully", accessToken);
     }
   }
 }
