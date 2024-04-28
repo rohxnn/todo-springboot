@@ -13,15 +13,18 @@ import com.example.demo.model.LoginResponse;
 
 import com.example.demo.security.TodoInterface;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/todo")
 public class AuthLogin {
 
     @Autowired
     TodoInterface loginService;
+    
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> Login(@RequestBody LoginModel login, @RequestHeader(name = "Authorization") String authHeader) {
+    public ResponseEntity<LoginResponse> Login(@RequestBody LoginModel login, @RequestHeader(name = "Authorization") String authHeader, HttpSession session) {
         String authorization = "myDearFreindXYZ"; //header value for testing purposes only
         LoginResponse message = loginService.checkLogin(login.getUsername(), login.getPassword());
         if (authHeader == null || authHeader.isEmpty()) {
@@ -31,6 +34,7 @@ public class AuthLogin {
         else if (message.getAccessToken() == null && authHeader.equals(authorization)) {
             return ResponseEntity.status(401).body(new LoginResponse(message.getMessage(), null)); // Use message from LoginResponse if available
         } else if(message.getAccessToken() != null && authHeader.equals(authorization)) {
+            session.setAttribute("user", message.getId());
             return ResponseEntity.ok(new LoginResponse(message.getId(), "Login Successful", message.getAccessToken()));
         } else {
             return ResponseEntity.status(401).body(null);
