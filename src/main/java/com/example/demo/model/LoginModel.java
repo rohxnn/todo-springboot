@@ -13,10 +13,14 @@ public class LoginModel {
     private String password;
     private String token;
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
-    
+
     public String getUsername() {
         return username;
     }
